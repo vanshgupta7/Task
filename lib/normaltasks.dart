@@ -48,22 +48,18 @@ class _NormalTasksState extends State<NormalTasks> {
             )
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            setState(() {
+              _showSheet = true;
+            });
+          },
+        ),
         body: Center(
           child: Row(
-            children: [
+            children: const [
               TaskList(),
-              ElevatedButton(
-                onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => AddTask()),
-                  // );
-                  setState(() {
-                    _showSheet = true;
-                  });
-                },
-                child: Text("Add Task"),
-              )
             ],
           ),
         ),
@@ -101,6 +97,8 @@ class _NormalTasksState extends State<NormalTasks> {
                             ),
                             onPressed: () {
                               setState(() {
+                                updateUserData(taskEntered);
+
                                 _showSheet = false;
                               });
                             },
@@ -112,7 +110,6 @@ class _NormalTasksState extends State<NormalTasks> {
                             ),
                             onPressed: () {
                               setState(() {
-                                updateUserData(taskEntered);
                                 _showSheet = false;
                               });
                             },

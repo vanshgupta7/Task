@@ -12,6 +12,12 @@ class TasksStorage {
     });
   }
 
+  // List<String>? taskfromSnapshot(QuerySnapshot snapshot) {
+  //   return snapshot.docs.map((doc) {
+  //     return String(doc.data['task'] ?? '');
+  //   });
+  // }
+
   Stream<QuerySnapshot> get diffTasks {
     return taskData.snapshots();
   }

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
 class TaskList extends StatefulWidget {
   const TaskList({Key? key}) : super(key: key);
@@ -12,12 +12,43 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
+  final db = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
-    final tasssks = Provider.of<QuerySnapshot>(context);
-    for (var doc in tasssks.docs) {
-      print(doc.data);
-    }
-    return Container();
+    // final tasssks = Provider.of<QuerySnapshot>(context);
+    // for (var doc in tasssks.docs) {
+    //   print(doc.data);
+    // }
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+        stream: db.collection('notes').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: Text("No Tasks"),
+            );
+          } else {
+            return SizedBox(
+              height: 200,
+              width: 400,
+              child: ListView(
+                children: snapshot.data!.docs.map((doc) {
+                  return SizedBox(
+                    height: 200,
+                    width: 400,
+                    child: Card(
+                      color: Colors.grey[200],
+                      child: ListTile(
+                        title: Text(doc.data().toString()),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            );
+          }
+        },
+      ),
+    );
   }
 }
