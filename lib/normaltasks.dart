@@ -59,7 +59,11 @@ class _NormalTasksState extends State<NormalTasks> {
         body: Center(
           child: Row(
             children: const [
-              TaskList(),
+              SizedBox(
+                height: 500,
+                width: 300,
+                child: TaskList(),
+              ),
             ],
           ),
         ),

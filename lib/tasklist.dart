@@ -21,30 +21,22 @@ class _TaskListState extends State<TaskList> {
     // }
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
-        stream: db.collection('notes').snapshots(),
+        stream: db.collection('tasks').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
               child: Text("No Tasks"),
             );
           } else {
-            return SizedBox(
-              height: 200,
-              width: 400,
-              child: ListView(
-                children: snapshot.data!.docs.map((doc) {
-                  return SizedBox(
-                    height: 200,
-                    width: 400,
-                    child: Card(
-                      color: Colors.grey[200],
-                      child: ListTile(
-                        title: Text(doc.data().toString()),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
+            return ListView(
+              children: snapshot.data!.docs.map((doc) {
+                return Card(
+                  color: Colors.grey[200],
+                  child: ListTile(
+                    title: Text(doc.data().toString()),
+                  ),
+                );
+              }).toList(),
             );
           }
         },
