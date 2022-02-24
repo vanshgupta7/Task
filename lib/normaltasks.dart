@@ -21,10 +21,11 @@ class _NormalTasksState extends State<NormalTasks> {
   final CollectionReference taskData =
       FirebaseFirestore.instance.collection('tasks');
 
-  Future<void> updateUserData(String tasks) async {
-    print("Success");
+  Future<void> updateUserData(String tasks, bool done) async {
+    // print("Success");
     return await taskData.doc().set({
       'task': tasks,
+      'completed': done,
     });
   }
 
@@ -59,68 +60,75 @@ class _NormalTasksState extends State<NormalTasks> {
         body: Center(
           child: Row(
             children: const [
-              SizedBox(
-                height: 500,
-                width: 300,
+              Expanded(
                 child: TaskList(),
               ),
             ],
           ),
         ),
         bottomSheet: _showSheet
-            ? BottomSheet(
-                elevation: 10,
-                backgroundColor: Colors.grey,
-                onClosing: () {
-                  // Do something
-                },
-                builder: (BuildContext ctx) => Container(
-                      width: double.infinity,
-                      height: 250,
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 220.0,
-                            height: 100,
-                            child: TextField(
-                              decoration: InputDecoration(
-                                fillColor: Colors.white,
-                                border: InputBorder.none,
-                                hintText: 'Enter Task',
-                                labelText: 'Task',
+            // ignore: sized_box_for_whitespace
+            ? Container(
+                height: 400,
+                child: BottomSheet(
+                    elevation: 10,
+                    backgroundColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    onClosing: () {
+                      // Do something
+                    },
+                    builder: (BuildContext ctx) => Container(
+                          width: double.infinity,
+                          height: 250,
+                          alignment: Alignment.center,
+                          child: Column(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 420.0,
+                                height: 200,
+                                decoration: BoxDecoration(border: Border.all()),
+                                margin: EdgeInsets.all(20),
+                                padding: EdgeInsets.all(15),
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    border: InputBorder.none,
+                                    hintText: 'Enter Task',
+                                    labelText: 'Task',
+                                  ),
+                                  onChanged: (value) => taskEntered = value,
+                                ),
                               ),
-                              onChanged: (value) => taskEntered = value,
-                            ),
-                          ),
-                          ElevatedButton(
-                            child: const Text(
-                              'Add',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                updateUserData(taskEntered);
+                              ElevatedButton(
+                                child: const Text(
+                                  'Add',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    updateUserData(taskEntered, false);
 
-                                _showSheet = false;
-                              });
-                            },
+                                    _showSheet = false;
+                                  });
+                                },
+                              ),
+                              ElevatedButton(
+                                child: const Text(
+                                  'Delete',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _showSheet = false;
+                                  });
+                                },
+                              ),
+                            ],
                           ),
-                          ElevatedButton(
-                            child: const Text(
-                              'Delete',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _showSheet = false;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ))
+                        )),
+              )
             : null,
       ),
     );

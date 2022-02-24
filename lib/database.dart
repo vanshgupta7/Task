@@ -6,9 +6,10 @@ class TasksStorage {
   final CollectionReference taskData =
       FirebaseFirestore.instance.collection('tasks');
 
-  Future<void> updateUserData(String tasks) async {
+  Future<void> updateUserData(String tasks, bool done) async {
     return await taskData.doc().set({
       'task': tasks,
+      'completed': done,
     });
   }
 
