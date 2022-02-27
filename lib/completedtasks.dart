@@ -41,7 +41,8 @@ class _CompletedTasksState extends State<CompletedTasks> {
                 itemBuilder: (context, index) {
                   return snapshot.data!.docs[index]['completed'] == true
                       ? Card(
-                          color: Colors.grey[200],
+                          // color: Colors.grey[200],
+                          margin: EdgeInsets.all(10),
                           child: ListTile(
                             // onTap: () {
                             //   Navigator.push(

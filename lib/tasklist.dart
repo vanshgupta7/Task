@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:task/edittask.dart';
-// import 'package:provider/provider.dart';
+import 'package:task/theme.dart';
+import 'package:provider/provider.dart';
 
 class TaskList extends StatefulWidget {
   const TaskList({Key? key}) : super(key: key);
@@ -21,6 +22,7 @@ class _TaskListState extends State<TaskList> {
     // for (var doc in tasssks.docs) {
     //   print(doc.data);
     // }
+
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
         stream: db.collection('tasks').snapshots(),
@@ -36,7 +38,8 @@ class _TaskListState extends State<TaskList> {
                 itemBuilder: (context, index) {
                   return snapshot.data!.docs[index]['completed'] == false
                       ? Card(
-                          color: Colors.grey[200],
+                          // color: Colors.grey[200],
+                          margin: const EdgeInsets.all(10),
                           child: ListTile(
                             onTap: () {
                               Navigator.push(

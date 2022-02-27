@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:task/taskList.dart';
+import 'package:task/theme.dart';
 // import 'package:task/addtask.dart';
 import 'completedtasks.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,8 @@ class NormalTasks extends StatefulWidget {
 class _NormalTasksState extends State<NormalTasks> {
   String taskEntered = "";
   bool _showSheet = false;
+  bool light = true;
+
   final CollectionReference taskData =
       FirebaseFirestore.instance.collection('tasks');
 
@@ -31,6 +34,8 @@ class _NormalTasksState extends State<NormalTasks> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeChanger _themeChanger = Provider.of<ThemeChanger>(context);
+
     return StreamProvider<QuerySnapshot?>.value(
       value: TasksStorage().diffTasks,
       initialData: null,
@@ -53,16 +58,26 @@ class _NormalTasksState extends State<NormalTasks> {
           child: Icon(Icons.add),
           onPressed: () {
             setState(() {
-              _showSheet = true;
+              _showSheet = !_showSheet;
             });
           },
         ),
         body: Center(
-          child: Row(
-            children: const [
+          child: Column(
+            children: [
               Expanded(
                 child: TaskList(),
               ),
+              Switch(
+                  value: light,
+                  onChanged: (value) {
+                    setState(() {
+                      light = value;
+                      light
+                          ? _themeChanger.setTheme(MyThemes.darkTheme)
+                          : _themeChanger.setTheme(MyThemes.lightTheme);
+                    });
+                  })
             ],
           ),
         ),
@@ -72,7 +87,7 @@ class _NormalTasksState extends State<NormalTasks> {
                 height: 400,
                 child: BottomSheet(
                     elevation: 10,
-                    backgroundColor: Colors.grey,
+                    // backgroundColor: Colors.grey,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     onClosing: () {
